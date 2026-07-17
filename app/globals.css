@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+body {
+  background-color: #FBF7EE;
+  color: #1C1A17;
+}
+
+/* Ticket stub: perforated edge look for meal-slot cards */
+.stub {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid #E5DFCF;
+  border-radius: 10px;
+}
+
+.stub::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: 34%;
+  border-left: 2px dashed #D8D2C4;
+}
+
+.stub::after {
+  content: "";
+  position: absolute;
+  left: calc(34% - 8px);
+  top: -9px;
+  width: 16px;
+  height: 16px;
+  background: #FBF7EE;
+  border: 1px solid #E5DFCF;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px #FBF7EE;
+}
+
+.stub-notch-bottom::before {
+  content: "";
+}
+
+@media (max-width: 640px) {
+  .stub::before {
+    left: 100%;
+    display: none;
+  }
+  .stub::after {
+    display: none;
+  }
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid #E8A93B;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
