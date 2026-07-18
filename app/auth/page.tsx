@@ -6,7 +6,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import Button from "@/components/Button";
 import { Field, Input, Select } from "@/components/Input";
-import { AlertCircle, Loader2, Ticket } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 
 function AuthForm() {
   const router = useRouter();
@@ -63,9 +63,8 @@ function AuthForm() {
     <div className="flex min-h-screen items-center justify-center px-6 py-16">
       <div className="w-full max-w-md">
         <Link href="/" className="flex items-center justify-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink text-paper">
-            <Ticket size={18} strokeWidth={2.25} />
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="MessSwap" className="h-9 w-9 rounded-lg object-cover" />
           <span className="font-display text-xl font-semibold tracking-tight">MessSwap</span>
         </Link>
 
