@@ -12,7 +12,6 @@ type Listing = {
   id: string;
   meal_slot: string;
   expires_at: string;
-  hosteller: { full_name: string } | null;
 };
 
 export default function BrowseListings({
@@ -103,9 +102,6 @@ export default function BrowseListings({
             <div>
               <p className="font-display text-base font-semibold">{slotLabel(l.meal_slot)}</p>
               <p className="text-sm text-steel">{slotTime(l.meal_slot)}</p>
-              {l.hosteller?.full_name && (
-                <p className="mt-1 text-xs text-steel">from {l.hosteller.full_name}</p>
-              )}
             </div>
             <div className="text-right">
               <p className="flex items-center justify-end font-display text-lg font-semibold">
