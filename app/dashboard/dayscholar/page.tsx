@@ -26,7 +26,7 @@ export default async function DayScholarDashboard() {
   const [{ data: listings }, { data: ownerQrSetting }, { data: myRequests }] = await Promise.all([
     supabase
       .from("listings")
-      .select("id, meal_slot, expires_at, hosteller:profiles!listings_hosteller_id_fkey(full_name)")
+      .select("id, meal_slot, expires_at")
       .eq("status", "available")
       .gt("expires_at", new Date().toISOString())
       .order("created_at", { ascending: true }),
