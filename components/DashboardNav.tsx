@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Button from "@/components/Button";
-import { LogOut, Ticket } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 export default function DashboardNav({
   fullName,
@@ -25,9 +25,8 @@ export default function DashboardNav({
     <header className="sticky top-0 z-40 border-b border-steelLight bg-paper/90 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-ink text-paper">
-            <Ticket size={16} strokeWidth={2.25} />
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="MessSwap" className="h-8 w-8 rounded-lg object-cover" />
           <div>
             <p className="font-display text-base font-semibold leading-tight tracking-tight">MessSwap</p>
             <p className="text-xs text-steel">
