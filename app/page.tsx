@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Button from "@/components/Button";
 import { MEAL_SLOTS, DAY_SCHOLAR_PRICE, HOSTELLER_PAYOUT } from "@/lib/constants";
-import { QrCode, Search, ShieldCheck, CheckCircle2, Ticket, ArrowRight } from "lucide-react";
+import { QrCode, Search, ShieldCheck, CheckCircle2, ArrowRight } from "lucide-react";
 
 const steps = [
   {
@@ -31,9 +31,8 @@ export default function Home() {
     <div>
       <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
         <span className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-ink text-paper">
-            <Ticket size={16} strokeWidth={2.25} />
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="MessSwap" className="h-8 w-8 rounded-lg object-cover" />
           <span className="font-display text-lg font-semibold tracking-tight">MessSwap</span>
         </span>
         <Link href="/auth">
