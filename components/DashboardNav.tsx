@@ -26,9 +26,9 @@ export default function DashboardNav({
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="MessSwap" className="h-8 w-8 rounded-lg object-cover" />
+          <img src="/logo.png" alt="MessSwap" className="h-10 w-10 rounded-lg object-cover" />
           <div>
-            <p className="font-display text-base font-semibold leading-tight tracking-tight">MessSwap</p>
+            <p className="font-display text-lg font-semibold leading-tight tracking-tight">MessSwap</p>
             <p className="text-xs text-steel">
               {fullName} · {roleLabel}
             </p>

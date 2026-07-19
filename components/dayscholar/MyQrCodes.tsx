@@ -14,7 +14,7 @@ export default function MyQrCodes({
         <Sparkles size={18} className="text-turmericDark" strokeWidth={2} />
         <h2 className="font-display text-lg font-semibold">Your meal QR codes</h2>
       </div>
-      <p className="text-sm text-steel">Approved and ready to use.</p>
+      <p className="text-sm text-steel">Approved and ready to use. Removed 48 hours after you requested them.</p>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         {items.map((item, i) => (
           <div

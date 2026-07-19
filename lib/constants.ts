@@ -18,3 +18,4 @@ export function slotTime(slot: string) {
 export const DAY_SCHOLAR_PRICE = 40;
 export const HOSTELLER_PAYOUT = 30;
 export const QR_LIFETIME_HOURS = 12;
+export const RECORD_RETENTION_HOURS = 48;

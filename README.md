@@ -93,10 +93,17 @@ try the full flow end to end.
    auto-detected.
 3. Add the environment variables from step 2, then deploy.
 4. `vercel.json` already registers a daily cron (`/api/cron/cleanup`) that
-   sweeps any listing past its 12-hour window. This runs once a day (the
-   max frequency Vercel's Hobby plan allows) — it's just housekeeping,
-   though, since listings already stop showing up for day scholars the
-   moment they pass 12 hours regardless of when the sweep runs.
+   does two things: flips any listing past its 12-hour window to *expired*,
+   and permanently deletes anything past **48 hours** — listings, requests,
+   payment screenshots, and mess QR images. This runs once a day (the max
+   frequency Vercel's Hobby plan allows), but old records already disappear
+   from every dashboard at the 12h/48h mark regardless of when the daily
+   sweep runs — the cron is what physically deletes the rows and files
+   afterward, so it's not urgent if it runs a few hours late.
+5. For the 48-hour purge to actually delete data (not just hide it), add
+   `SUPABASE_SERVICE_ROLE_KEY` from Supabase → Project Settings → API. Without
+   it, old records still vanish from the UI on schedule, they just won't be
+   physically removed from your database/storage.
 
 ## Email alerts (optional)
 

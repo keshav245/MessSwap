@@ -54,7 +54,6 @@ export default function Home() {
             <p className="mt-4 max-w-md text-base text-steel">
               Hostellers share the mess QR for meals they won't eat. Day scholars pay ₹{DAY_SCHOLAR_PRICE}
               to claim one. The owner verifies every payment before the QR is released — nobody loses out.
-              Email- messswap@gmail.com
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/auth?role=hosteller">

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import DashboardNav from "@/components/DashboardNav";
 import OwnerConsole from "@/components/admin/OwnerConsole";
+import { RECORD_RETENTION_HOURS } from "@/lib/constants";
 
 export default async function AdminDashboard() {
   const supabase = createClient();
@@ -19,6 +20,8 @@ export default async function AdminDashboard() {
   if (!profile) redirect("/auth");
   if (profile.role !== "admin") redirect("/dashboard");
 
+  const retentionCutoff = new Date(Date.now() - RECORD_RETENTION_HOURS * 3600_000).toISOString();
+
   const [{ data: profiles }, { data: listings }, { data: requests }, { data: ownerQrSetting }] =
     await Promise.all([
       supabase
@@ -31,6 +34,7 @@ export default async function AdminDashboard() {
         .select(
           "id, status, created_at, payment_screenshot_path, listing:listings(id, meal_slot, hosteller_id, hosteller:profiles!listings_hosteller_id_fkey(full_name, phone)), day_scholar:profiles!requests_day_scholar_id_fkey(full_name, phone, email)"
         )
+        .gt("created_at", retentionCutoff)
         .order("created_at", { ascending: false }),
       supabase.from("settings").select("value").eq("key", "owner_payment_qr_path").maybeSingle(),
     ]);

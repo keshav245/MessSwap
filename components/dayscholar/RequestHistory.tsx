@@ -13,6 +13,7 @@ export default function RequestHistory({
         <History size={17} className="text-steel" strokeWidth={2} />
         <h2 className="font-display text-lg font-semibold">Your requests</h2>
       </div>
+      <p className="text-xs text-steel">Requests disappear from here 48 hours after you submit them.</p>
       <div className="mt-4 space-y-2">
         {requests.length === 0 && (
           <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-steelLight py-8 text-center">

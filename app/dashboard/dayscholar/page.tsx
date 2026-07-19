@@ -4,6 +4,7 @@ import DashboardNav from "@/components/DashboardNav";
 import BrowseListings from "@/components/dayscholar/BrowseListings";
 import MyQrCodes from "@/components/dayscholar/MyQrCodes";
 import RequestHistory from "@/components/dayscholar/RequestHistory";
+import { RECORD_RETENTION_HOURS } from "@/lib/constants";
 import { UtensilsCrossed } from "lucide-react";
 
 export default async function DayScholarDashboard() {
@@ -23,6 +24,8 @@ export default async function DayScholarDashboard() {
   if (profile.role === "admin") redirect("/dashboard/admin");
   if (profile.role !== "day_scholar") redirect("/dashboard/hosteller");
 
+  const retentionCutoff = new Date(Date.now() - RECORD_RETENTION_HOURS * 3600_000).toISOString();
+
   const [{ data: listings }, { data: ownerQrSetting }, { data: myRequests }] = await Promise.all([
     supabase
       .from("listings")
@@ -35,6 +38,7 @@ export default async function DayScholarDashboard() {
       .from("requests")
       .select("id, status, created_at, listing:listings(id, meal_slot)")
       .eq("day_scholar_id", user.id)
+      .gt("created_at", retentionCutoff)
       .order("created_at", { ascending: false }),
   ]);
 

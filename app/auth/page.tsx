@@ -64,8 +64,8 @@ function AuthForm() {
       <div className="w-full max-w-md">
         <Link href="/" className="flex items-center justify-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="MessSwap" className="h-9 w-9 rounded-lg object-cover" />
-          <span className="font-display text-xl font-semibold tracking-tight">MessSwap</span>
+          <img src="/logo.png" alt="MessSwap" className="h-11 w-11 rounded-lg object-cover" />
+          <span className="font-display text-2xl font-semibold tracking-tight">MessSwap</span>
         </Link>
 
         <div className="animate-in stub mt-8 p-6 sm:p-8">

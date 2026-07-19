@@ -60,7 +60,8 @@ export default function OwnerConsole({
         <div>
           <h1 className="font-display text-2xl font-semibold sm:text-3xl">Owner console</h1>
           <p className="text-sm text-steel">
-            Review requests, verify payment, approve to release the mess QR.
+            Review requests, verify payment, approve to release the mess QR. Requests drop off
+            here 48 hours after they're submitted.
           </p>
         </div>
       </div>
