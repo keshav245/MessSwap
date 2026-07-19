@@ -1,5 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="7" fill="#1C1A17"/>
-  <path d="M8 12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1.5a1.5 1.5 0 0 0 0 3V18a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-1.5a1.5 1.5 0 0 0 0-3V12Z" fill="#E8A93B"/>
-  <path d="M16 10.5v9" stroke="#1C1A17" stroke-width="1.2" stroke-dasharray="1.6 1.6"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Drop shadow for the outer badge -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="5" stdDeviation="6" flood-opacity="0.25" />
+    </filter>
+
+    <!-- Gradients -->
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#72b5cd" />
+      <stop offset="100%" stop-color="#3b7f9f" />
+    </linearGradient>
+
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8be68" />
+      <stop offset="100%" stop-color="#e29541" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Base -->
+  <circle cx="250" cy="250" r="235" fill="#fcfcfc" filter="url(#shadow)" />
+  <circle cx="250" cy="250" r="230" fill="#fcfcfc" />
+
+  <!-- Outer Borders -->
+  <circle cx="250" cy="250" r="205" fill="none" stroke="#68a6c3" stroke-width="22" />
+  <circle cx="250" cy="250" r="183" fill="none" stroke="#377e9e" stroke-width="7" />
+
+  <!-- Infinity Arrows Loop -->
+  <g stroke-linecap="butt" stroke-width="28" fill="none">
+    <!-- Orange Circular Loop (Right) -->
+    <path d="M 260 130 C 430 130, 430 310, 260 310" stroke="url(#orangeGrad)" />
+    <!-- Blue Circular Loop (Left) -->
+    <path d="M 240 310 C 70 310, 70 130, 240 130" stroke="url(#blueGrad)" />
+  </g>
+
+  <!-- Arrowheads -->
+  <!-- Left pointing Orange Arrowhead (Bottom) -->
+  <polygon points="275,270 195,310 275,350" fill="#e29541" />
+  <!-- Right pointing Blue Arrowhead (Top) -->
+  <polygon points="225,90 305,130 225,170" fill="#60a8c2" />
+
+  <!-- Center Dining Elements -->
+  <g fill="url(#orangeGrad)">
+    <!-- Base Tray -->
+    <rect x="145" y="285" width="210" height="12" rx="4" />
+    <!-- Tray Feet -->
+    <rect x="165" y="295" width="14" height="8" rx="4" />
+    <rect x="320" y="295" width="14" height="8" rx="4" />
+
+    <!-- Bowl -->
+    <path d="M 160 250 C 160 282, 220 282, 220 250 Z" />
+    <rect x="156" y="246" width="68" height="5" rx="2" />
+
+    <!-- Plate Background (Solid Inner Circle) -->
+    <circle cx="250" cy="235" r="28" />
+  </g>
+
+  <!-- Plate Outline -->
+  <circle cx="250" cy="235" r="40" fill="none" stroke="url(#orangeGrad)" stroke-width="7" />
+
+  <!-- Cutlery -->
+  <!-- Fork -->
+  <g stroke="url(#orangeGrad)" stroke-linecap="round">
+    <path d="M 284 210 L 284 225 A 6 6 0 0 0 296 225 L 296 210" fill="none" stroke-width="3.5" />
+    <line x1="290" y1="210" x2="290" y2="225" stroke-width="3.5" />
+    <line x1="290" y1="230" x2="290" y2="280" stroke-width="5" />
+  </g>
+
+  <!-- Spoon -->
+  <ellipse cx="320" cy="218" rx="9" ry="14" fill="url(#orangeGrad)" />
+  <line x1="320" y1="230" x2="320" y2="280" stroke="url(#orangeGrad)" stroke-width="5" stroke-linecap="round" />
 </svg>
