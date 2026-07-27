@@ -1,159 +1,62 @@
-# MessSwap v2
+# GtaMods
 
-A clean rebuild of MessSwap: plain Next.js (App Router) + Supabase, deployed
-natively on Vercel. No Lovable, no Nitro presets — just a normal Next.js app
-you can edit freely.
+Redesigned presentation layer — dark cyberpunk/gamer marketplace UI. Phase 1: Landing page + shared design system.
 
-This is a brand-new project. It does **not** touch or depend on the original
-`keshav245/messswap` repo or its Supabase project in any way.
+## Setup
 
-## The mechanism
+1. Unzip this into a new folder.
+2. Push it to a new GitHub repo:
+   - Create a repo on GitHub named `gtamods` (don't initialize with a README).
+   - On your machine (or via GitHub Desktop), add this folder as the repo and push to `main`.
+   - If you don't want to use git commands: on the empty repo page, use **Add file → Upload files**, then drag the entire unzipped folder contents in and commit.
+3. Add a placeholder image: drop any 16:9 image into `public/placeholder-mod.jpg` (used by the mod cards until real R2 thumbnails are wired in).
+4. Deploy on Vercel:
+   - vercel.com → **Add New → Project** → Import this repo.
+   - Framework preset auto-detects **Next.js**. Deploy.
 
-1. **Hostler uploads a QR.** Won't eat a meal? Upload its mess QR (PNG) for
-   one of four fixed slots — Breakfast (7–9:30 AM), Lunch (12:30–2:30 PM),
-   Snack (4:30–6 PM), Dinner (7:30–9:30 PM). It's live for 12 hours, then
-   auto-expires.
-2. **Day scholar browses & pays.** They pick an available meal, scan the
-   owner's Paytm/UPI QR, pay ₹40, and upload a screenshot of the payment.
-3. **Owner verifies.** The request shows up in the owner console as
-   *Pending*, with the payment screenshot attached.
-4. **Approve → QR released.** One click reveals the meal QR in the day
-   scholar's "Your meal QR codes" section (Open + Download), marks the
-   listing *Used*, and credits the hostler ₹30.
+## What's included
 
-No Razorpay — payment is verified manually via screenshot, by design (see
-"Payments" below for how to add Razorpay later if you want it).
+- Design system: Tailwind config (colors, glow shadows, animations), Space Grotesk / Inter / JetBrains Mono fonts, glass + reticle-lock hover utilities in `app/globals.css`.
+- Shared layout: `Navbar`, `BottomNav` (mobile), `Footer`.
+- Shared UI: `GlassCard`, `NeonButton`.
+- Landing page (`/`): `Hero` (animated mesh gradient), `PurchaseTicker` (mock data — swap for a real Supabase query later), `FeaturedCarousel` (3D tilt cards), `CategoryGrid`.
+- `ModCard` component used across landing/browse/category pages.
 
-## Roles
+## Phase 2 additions
 
-**Hostler** — upload a QR per slot · see own listings (Not used / Used) ·
-delete unused listings · upload a payout QR so the owner can pay them ₹30 ·
-listings auto-expire after 12h.
+- `lib/mods-data.ts` — shared mock catalog (6 mods). Replace `getAllMods`, `getModBySlug`, `getModsByCategory` with real Supabase queries later; every page below keeps working as long as the function signatures stay the same.
+- `/browse` — client-side search, category filter, price slider, sort (popular/newest/price). Empty state with reset CTA.
+- `/category/:slug` — static per-category page (`generateStaticParams` pre-renders all 4 categories).
+- `/mod/:slug` — split-screen: `MediaGallery` (thumbnail selector) on the left, sticky `PurchasePanel` (price, Buy Now, view/download/rating stats) on the right, description + `Changelog` below.
+- `EmptyState` — reusable illustrated empty state with optional CTA.
 
-**Day Scholar** — browse by slot · pay ₹40 and submit a screenshot · track
-request status (Pending → Approved/Rejected) · "Your meal QR codes" with
-Open/Download · full request history.
+The `PurchasePanel`'s `handleBuyNow` is a stub (`setTimeout`) — wire it to your Razorpay order-creation server action next.
 
-**Owner (Admin)** — review every pending request with payment screenshot +
-meal QR + hostler's payout QR side by side · one-click Approve/Reject ·
-search & browse all users, their roles, contact info, and earnings ·
-upload the QR day scholars pay into.
+## Phase 3 additions
 
-## Stack
+- `/auth` — sign in / sign up tab toggle, Google OAuth button, email/password form, forgot-password link. `AuthForm.tsx` has `TODO` comments marking exactly where `supabase.auth.signInWithOAuth` / `signInWithPassword` / `signUp` calls go.
+- `/library` — owned mods grid (`OwnedModCard` with a Download button) + download history table. Currently reads from `lib/library-data.ts` mock data; the page has a `TODO` comment for adding the auth guard (middleware or `supabase.auth.getUser()` redirect) and swapping in a real Supabase query scoped to the signed-in user.
+- Both pages are pure UI — no session state is created yet, so `/library` is not actually protected until you wire the auth check back in.
 
-Next.js 14 (App Router, TypeScript) · Tailwind CSS · Supabase (Postgres +
-Auth + Storage), via `@supabase/ssr` · deploys to Vercel with zero config.
+## Phase 4 additions
 
-## 1. Set up Supabase
+- `/dashboard` (Employee console) — sidebar layout (`components/dashboard/Sidebar.tsx`), stat cards with inline SVG sparklines (no chart library dependency), and a mods data table with inline publish/unpublish and delete-draft actions.
+- `/dashboard/upload` — mod upload form: title (auto-slugifies), slug (editable), description, price, category, a screenshot multi-upload grid with previews, and a drag-and-drop mod-file dropzone with an animated circular progress ring.
+- `lib/dashboard-data.ts` — mock employee mods + sparkline series. Swap `EMPLOYEE_MODS` for a real query scoped to `auth.uid()`, and wire the `TODO` comments in `ModsTable.tsx` (publish/unpublish/delete) and `upload/page.tsx` (R2 upload + insert mod row) to real server actions.
+- `UploadDropzone`'s progress is simulated with `setInterval` — swap for real upload progress via `XMLHttpRequest.upload.onprogress` when you wire it to R2 (plain `fetch` doesn't expose upload progress).
 
-**Starting fresh?** Run [`supabase/schema.sql`](./supabase/schema.sql) in a
-new project's SQL editor — it sets up everything in one go.
+## Phase 5 additions — `/admin` (Owner console), final phase
 
-**Already deployed the earlier version of this app?** Run
-[`supabase/migration_003_full_mechanism.sql`](./supabase/migration_003_full_mechanism.sql)
-instead. It's additive/transformative but keeps your existing accounts —
-read the comments at the top before running it.
+- `components/ui/ToastProvider.tsx` — toast context + `useToast()` hook, now wrapping the whole app in `app/layout.tsx`. Each toast carries a severity (`success`/`error`/`warning`/`info`) with its own icon and color, auto-dismisses after 4s, animates in/out with Framer Motion.
+- `/admin` — revenue overview: stat cards + top-mods and top-employees leaderboards.
+- `/admin/roles` — command-palette-style role grant (email + role select), and a chip list of current role holders with a revoke-on-click `X`. `RoleCommandPalette.tsx` returns a structured `{ ok, code, message }` result from its stub functions and maps each `code` to the right toast severity — including `user_not_found`, handled gracefully as "role will apply once they sign up" rather than an error.
+- `/admin/moderation` — platform-wide mods table (not just one employee's), with status filter tabs and approve/unpublish/delete actions.
+- `/admin/employees` — per-employee audit: upload count, sales, revenue, expandable activity log.
+- `/admin/users` — searchable user directory with expandable purchase history per user.
+- All mock data lives in `lib/admin-data.ts` — swap `PLATFORM_USERS`, `PLATFORM_MODS`, `EMPLOYEE_AUDITS` for real Supabase queries (all should go through `private.has_role(auth.uid(), 'owner')`-gated RLS).
 
-Either way, at the bottom of the file there's a commented line — after
-running the rest, uncomment it, put in your own email, and run just that
-line to make yourself the owner:
+## That's the full route set
 
-```sql
-update public.profiles set role = 'admin' where email = 'you@example.com';
-```
+`/`, `/browse`, `/category/:slug`, `/mod/:slug`, `/auth`, `/library`, `/dashboard` (+ `/dashboard/upload`), `/admin` (+ `/roles`, `/moderation`, `/employees`, `/users`) — every page from the spec, redesigned. Every interactive backend touchpoint (auth, purchase, download links, role grants, moderation, uploads) is a clearly-marked `TODO` stub ready for your Supabase/Razorpay/R2 wiring — the presentation layer is done.
 
-Then go to **Project Settings → API** and copy the **Project URL** and
-`anon` public key.
-
-## 2. Configure environment variables
-
-```bash
-cp .env.example .env.local
-```
-
-Fill in the two Supabase values from step 1. The email vars are optional —
-see "Email alerts" below.
-
-## 3. Run it locally
-
-```bash
-npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000). Register as a hostler,
-a day scholar, and promote a third account (or yourself) to admin via SQL to
-try the full flow end to end.
-
-## 4. Deploy to Vercel
-
-1. Push this folder to a **new** GitHub repo (files at the repo root, not
-   nested in a subfolder).
-2. In Vercel: **Add New → Project → Import** that repo — Next.js is
-   auto-detected.
-3. Add the environment variables from step 2, then deploy.
-4. `vercel.json` already registers a daily cron (`/api/cron/cleanup`) that
-   does two things: flips any listing past its 12-hour window to *expired*,
-   and permanently deletes anything past **48 hours** — listings, requests,
-   payment screenshots, and mess QR images. This runs once a day (the max
-   frequency Vercel's Hobby plan allows), but old records already disappear
-   from every dashboard at the 12h/48h mark regardless of when the daily
-   sweep runs — the cron is what physically deletes the rows and files
-   afterward, so it's not urgent if it runs a few hours late.
-5. For the 48-hour purge to actually delete data (not just hide it), add
-   `SUPABASE_SERVICE_ROLE_KEY` from Supabase → Project Settings → API. Without
-   it, old records still vanish from the UI on schedule, they just won't be
-   physically removed from your database/storage.
-
-## Email alerts (optional)
-
-To get an email when a new request comes in:
-
-1. Create a free [Resend](https://resend.com) account, verify a sender (or
-   use their shared `onboarding@resend.dev` for testing), and grab an API key.
-2. Set `RESEND_API_KEY` and `OWNER_EMAIL` in your environment (locally and
-   in Vercel). Leave them unset to skip email entirely — nothing else
-   breaks if you do.
-
-## Payments (optional upgrade path)
-
-Screenshot verification works fine at small scale but doesn't stop someone
-uploading a fake or reused screenshot. If you want real verification later,
-swap the `payment-screenshots` upload step in `BrowseListings.tsx` for a
-Razorpay order + webhook that confirms payment server-side before calling
-`create_request`.
-
-## Security notes
-
-- Meal QR images sit in a **public** Supabase Storage bucket (so the app can
-  show them via plain URLs) at unguessable per-listing paths. The real
-  access control is the `listing_qr` table's row-level security — a day
-  scholar can only look up a listing's `image_path` after their request is
-  approved. Someone with the raw file URL in hand could still view it
-  directly; that's an inherent tradeoff of using public storage URLs.
-- Payment screenshots and payout QRs are **private** buckets — only the
-  uploader and the admin can generate a signed URL to view them.
-- New accounts can only ever be `hosteller` or `day_scholar`. `admin` is
-  granted exclusively via a manual SQL update, never through the signup form.
-
-## Project structure
-
-```
-app/
-  page.tsx                       landing page
-  auth/page.tsx                  sign in / register
-  dashboard/page.tsx             redirects by role
-  dashboard/hosteller/           post listings, payout QR, earnings
-  dashboard/dayscholar/          browse, pay, request history, your QR codes
-  dashboard/admin/               owner console
-  api/notify-owner/              optional email on new request
-  api/cron/cleanup/              daily expiry sweep
-components/                      shared UI + role-specific components
-lib/constants.ts                 meal slots, pricing, QR lifetime
-lib/storage.ts                   upload / signed URL helpers
-lib/supabase/                    browser + server Supabase clients
-middleware.ts                    keeps the Supabase session refreshed
-supabase/schema.sql              fresh install
-supabase/migration_003_full_mechanism.sql   upgrade from the earlier version
-vercel.json                      daily cron registration
-```
+Backend logic (Supabase RLS, `private.has_role()`, Razorpay webhook, R2 presigned URLs) is untouched — this is UI only.

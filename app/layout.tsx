@@ -1,18 +1,26 @@
-import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { spaceGrotesk, inter, jetbrainsMono } from '@/lib/fonts';
+import Navbar from '@/components/layout/Navbar';
+import BottomNav from '@/components/layout/BottomNav';
+import Footer from '@/components/layout/Footer';
+import { ToastProvider } from '@/components/ui/ToastProvider';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "MessSwap",
-  description: "Hostellers share unused mess meal slots. Day scholars grab them. No meal goes to waste.",
+  title: 'GtaMods — Game Mods Marketplace',
+  description: 'Buy and sell verified game mods. Instant delivery, secure payments.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="font-body min-h-screen bg-paper text-ink antialiased">
-        {children}
-        <Analytics />
+    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+      <body>
+        <ToastProvider>
+          <Navbar />
+          <main className="min-h-screen pb-20 md:pb-0">{children}</main>
+          <Footer />
+          <BottomNav />
+        </ToastProvider>
       </body>
     </html>
   );
